@@ -5,14 +5,18 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAcJG54k0cRu_OwvoS3rN3uI5_swgRKCF0",
-  authDomain: "shuttle-6d778.firebaseapp.com",
-  projectId: "shuttle-6d778",
-  storageBucket: "shuttle-6d778.appspot.com",
-  messagingSenderId: "545275068216",
-  appId: "1:545275068216:web:8396b8892f6a915b868bcd",
-  measurementId: "G-2D5MCTP1P0"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
+
+if (!firebaseConfig.apiKey) {
+  throw new Error('Missing firebase apiKey')
+}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
