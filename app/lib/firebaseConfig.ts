@@ -1,7 +1,7 @@
-import { initializeApp } from 'firebase/app'
-import { GoogleAuthProvider, getAuth } from 'firebase/auth'
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getAnalytics, isSupported } from 'firebase/analytics';
+import { getFirestore } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -14,15 +14,16 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-if (!firebaseConfig.apiKey) {
-  throw new Error('Missing firebase apiKey')
-}
-
 // Initialize Firebase
-const app = initializeApp(firebaseConfig)
-const analytics = getAnalytics(app);
-const provider = new GoogleAuthProvider()
-const auth = getAuth()
-const db = getFirestore(app)
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-export { app, provider, auth, analytics, db}
+let analytics;
+isSupported().then((supported) => {
+  if (supported) {
+    analytics = getAnalytics(app);
+  }
+});
+
+export { app, auth, db, analytics };
