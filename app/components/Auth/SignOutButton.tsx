@@ -1,25 +1,16 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
-import { auth } from '../../lib/firebaseConfig';
+import { useAuth } from '../../context/AuthContext';
+import tw from 'tailwind-styled-components';
 
 const SignOutButton = () => {
-  const router = useRouter();
+  const { logout } = useAuth();
 
-  const handleSignOut = async () => {
-    try {
-      await auth.signOut();
-      router.push('/'); // Redirect to home page after sign-out
-    } catch (error:any) {
-      console.error('Sign-out error:', error.message);
-    }
-  };
-
-  return (
-    <button onClick={handleSignOut}>
-      Sign Out
-    </button>
-  );
+  return <Button onClick={logout}>Sign Out</Button>;
 };
 
 export default SignOutButton;
+
+const Button = tw.button`
+  bg-red-500 text-white p-2 rounded hover:bg-red-600 transition-colors duration-300
+`;

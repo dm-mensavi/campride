@@ -2,23 +2,30 @@
 
 import { useState } from 'react';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
 import { auth } from '../../lib/firebaseConfig';
+import { useAuth } from '../../context/AuthContext';
+import { useRouter } from 'next/navigation';
 import tw from 'tailwind-styled-components';
 
 const SignInForm = () => {
   const [error, setError] = useState('');
   const router = useRouter();
+  const { user } = useAuth();
 
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-      router.push('/pages/routeselect');
+      router.push('/routeSelect');
     } catch (error) {
       setError('Sign-in with Google failed. Please try again.');
     }
   };
+
+  if (user) {
+    router.push('/routeSelect');
+    return null;
+  }
 
   return (
     <Wrapper>

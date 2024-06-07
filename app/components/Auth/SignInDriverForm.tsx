@@ -1,30 +1,36 @@
 "use client";
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../lib/firebaseConfig';
+import { useAuth } from '../../context/AuthContext';
+import { useRouter } from 'next/navigation';
 import tw from 'tailwind-styled-components';
 
-const SignInDriverForm = () => {
+const SignInForm = () => {
   const [error, setError] = useState('');
   const router = useRouter();
+  const { user } = useAuth();
 
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-      // Redirect to driver dashboard or any other driver-specific page
-      router.push('/pages/driver');
+      router.push('/driver/dashboard');
     } catch (error) {
       setError('Sign-in with Google failed. Please try again.');
     }
   };
 
+  if (user) {
+    router.push('/driver/dashboard');
+    return null;
+  }
+
   return (
     <Wrapper>
       <FormContainer>
-        <Title>Driver Sign In</Title>
+        <Title>Sign In</Title>
         <Button onClick={handleGoogleSignIn}>Sign In with Google</Button>
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </FormContainer>
@@ -32,7 +38,7 @@ const SignInDriverForm = () => {
   );
 };
 
-export default SignInDriverForm;
+export default SignInForm;
 
 const Wrapper = tw.div`
   flex h-screen items-center justify-center bg-gray-100
