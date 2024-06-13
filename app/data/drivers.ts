@@ -8,8 +8,8 @@ export const drivers = [
     shuttlenumber: '1001',
     shuttletype: 'Bus',
     shuttleimage_id: 'image1',
-    locationX: 0,
-    locationY: 0,
+    lat: 0,
+    long: 0,
   },
   {
     id: '2',
@@ -20,7 +20,7 @@ export const drivers = [
     shuttlenumber: '1002',
     shuttletype: 'Mini-bus',
     shuttleimage_id: 'image2',
-    locationX: 0,
-    locationY: 0,
+    lat: 0,
+    long: 0,
   }
 ];

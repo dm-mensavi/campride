@@ -16,13 +16,13 @@ const RouteSelect = () => {
   const router = useRouter();
 
   const handleRouteSelect = (route: string) => {
-    router.push(`/pages/routeselect/user/stops?route=${encodeURIComponent(route)}`);
+    router.push(`/pages/driver?route=${encodeURIComponent(route)}`);
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-100">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-4">Select User Route</h1>
+        <h1 className="text-2xl font-bold mb-4">Select Driver Route</h1>
         <ul className="list-disc ml-6 mb-4">
           {routes.map((route, index) => (
             <li key={index} className="mb-2 list-none">

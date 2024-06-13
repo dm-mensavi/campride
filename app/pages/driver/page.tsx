@@ -1,9 +1,13 @@
-import React from 'react'
+"use client";
+import withAuth from '../../hoc/withAuth';
 
-const DriverHome = () => {
+const DriverDashboard = () => {
   return (
-    <div>DriverHome</div>
-  )
-}
+    <div>
+      <h1>Driver Dashboard</h1>
+      {/* Driver dashboard content */}
+    </div>
+  );
+};
 
-export default DriverHome
+export default withAuth(DriverDashboard);
