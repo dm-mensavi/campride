@@ -20,7 +20,7 @@ const Tracking = () => {
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
         <h1 className="text-2xl font-bold mb-4">Tracking Buses</h1>
         <GoogleMapLoader apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string}>
-          <GoogleMapComponent coordinates={trackedBuses.map(bus => ({ lat: bus.lat, long: bus.long }))} />
+          <GoogleMapComponent coordinates={trackedBuses.map(bus => ({ lat: bus.lat, lng: bus.long }))} />
         </GoogleMapLoader>
         <ul className="list-none p-0">
           {trackedBuses.map((bus, index) => (
