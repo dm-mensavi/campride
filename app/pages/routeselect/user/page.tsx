@@ -19,7 +19,13 @@ const SelectPickupDropoff = () => {
     e.preventDefault();
     const selectedRoute = locations.find(location => location.name === pickup)?.route;
     if (selectedRoute) {
-      router.push(`/pages/routeselect/user/bus?route=${selectedRoute}`);
+      const pickupLocation = locations.find(location => location.name === pickup)?.coordinates;
+      const dropoffLocation = locations.find(location => location.name === dropoff)?.coordinates;
+      if (pickupLocation && dropoffLocation) { // Add null check for pickupLocation and dropoffLocation
+        router.push(`/pages/routeselect/user/bus?route=${selectedRoute}&pickup=${pickup}&dropoff=${dropoff}&pickupLat=${pickupLocation[1]}&pickupLng=${pickupLocation[0]}&dropoffLat=${dropoffLocation[1]}&dropoffLng=${dropoffLocation[0]}`);
+      } else {
+        console.error('Invalid pickup or dropoff location');
+      }
     } else {
       console.error('No route found for the selected pickup location');
     }

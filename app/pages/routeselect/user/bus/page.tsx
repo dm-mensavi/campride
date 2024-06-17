@@ -9,7 +9,13 @@ const SelectBus = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const route = searchParams.get('route');
-  
+  const pickup = searchParams.get('pickup');
+  const dropoff = searchParams.get('dropoff');
+  const pickupLat = searchParams.get('pickupLat');
+  const pickupLng = searchParams.get('pickupLng');
+  const dropoffLat = searchParams.get('dropoffLat');
+  const dropoffLng = searchParams.get('dropoffLng');
+
   const filteredBuses = busList.filter(bus => bus.route === route);
   const [selectedBuses, setSelectedBuses] = useState<string[]>([]);
 
@@ -22,7 +28,7 @@ const SelectBus = () => {
   };
 
   const handleSubmit = () => {
-    router.push(`/pages/tracking?busIds=${selectedBuses.join(',')}`);
+    router.push(`/pages/tracking?busIds=${selectedBuses.join(',')}&pickup=${pickup}&dropoff=${dropoff}&pickupLat=${pickupLat}&pickupLng=${pickupLng}&dropoffLat=${dropoffLat}&dropoffLng=${dropoffLng}`);
   };
 
   return (

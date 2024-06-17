@@ -1,18 +1,18 @@
-import React from 'react';
-import useLoadGoogleMapsScript from '../../hooks/useLoadGoogleMapsScript';
+import React, { FC } from 'react';
+import { useLoadScript } from '@react-google-maps/api';
 
 interface GoogleMapLoaderProps {
   apiKey: string;
   children: React.ReactNode;
 }
 
-const GoogleMapLoader: React.FC<GoogleMapLoaderProps> = ({ apiKey, children }) => {
-  const isLoaded = useLoadGoogleMapsScript(apiKey);
+const GoogleMapLoader: FC<GoogleMapLoaderProps> = ({ apiKey, children }) => {
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: apiKey,
+    libraries: ['places'],
+  });
 
-  if (!isLoaded) {
-    return <div>Loading Google Maps...</div>;
-  }
-
+  if (!isLoaded) return <div>Loading...</div>;
   return <>{children}</>;
 };
 
