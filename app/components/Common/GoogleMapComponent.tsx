@@ -1,29 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
+import React, { useEffect, useState, useCallback } from 'react';
+import { GoogleMap, useJsApiLoader, MarkerF } from '@react-google-maps/api';
+import { Driver, Coordinates } from '@/app/types';
 
+// Define the mapContainerStyle as a constant outside the component
 const mapContainerStyle = {
-  width: '100%',
-  height: '400px',
+  width: '400px',
+  height: '400px'
 };
 
-interface Coordinate {
-  lat: number;
-  lng: number;
-}
-
 interface GoogleMapComponentProps {
-  coordinates: Coordinate[];
-  pickup: Coordinate;
-  dropoff: Coordinate;
+  drivers: Driver[];
+  pickup: Coordinates;
+  dropoff: Coordinates;
 }
 
-const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({ coordinates, pickup, dropoff }) => {
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [userLocation, setUserLocation] = useState<Coordinate | null>(null);
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
-    libraries: ['places'],
+const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({ drivers, pickup, dropoff }) => {
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
   });
+  
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -44,50 +42,58 @@ const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({ coordinates, pi
     }
   }, [map]);
 
-  const onLoad = (map: google.maps.Map) => {
+  const onLoad = useCallback((map: google.maps.Map) => {
     setMap(map);
     if (userLocation) {
       map.setCenter(userLocation);
     }
-  };
+  }, [userLocation]);
+
+  const onUnmount = useCallback(() => {
+    setMap(null);
+  }, []);
 
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
     <GoogleMap
       mapContainerStyle={mapContainerStyle}
-      center={userLocation || { lat: 6.68275, lng: -1.57699 }} // default center if user location is not available
+      center={userLocation? userLocation : { lat: 6.68275, lng: -1.57699 }} // default center if user location is not available
       zoom={14}
       onLoad={onLoad}
+      onUnmount={onUnmount}
     >
-      {coordinates.map((coord, index) => (
-        <Marker key={index} position={{ lat: coord.lat, lng: coord.lng }} />
+      {drivers.map((driver, index) => (
+        <MarkerF key={index} position={driver.location} label={driver.shuttle_number} />
       ))}
       {userLocation && (
-        <Marker
+        <MarkerF
           position={userLocation}
           icon={{
             url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
             scaledSize: new google.maps.Size(40, 40),
           }}
+          label="User"
         />
       )}
       {pickup && (
-        <Marker
+        <MarkerF
           position={pickup}
           icon={{
             url: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
             scaledSize: new google.maps.Size(40, 40),
           }}
+          label="Pickup"
         />
       )}
       {dropoff && (
-        <Marker
+        <MarkerF
           position={dropoff}
           icon={{
             url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
             scaledSize: new google.maps.Size(40, 40),
           }}
+          label="Dropoff"
         />
       )}
     </GoogleMap>

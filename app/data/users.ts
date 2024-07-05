@@ -15,6 +15,15 @@ export const users = [
     pickup_location: 'Central Bus Stop (Commercial Area)',
     dropoff_location: 'SRC Bus Stop (Casely Hayford)',
     lat: 0,
-    locationY: 0,
+    long: 0,
   },
+  {
+    id: '3',
+    name: 'User 3',
+    fav_route: 'Route C',
+    pickup_location: 'Central Bus Stop (Commercial Area)',
+    dropoff_location: 'SRC Bus Stop (Casely Hayford)',
+    lat: 0,
+    long: 0,
+  }
 ];

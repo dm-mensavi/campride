@@ -1,34 +1,44 @@
 "use client";
 
-import React, { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { busList } from '../../../../data/buses';
-import tw from 'tailwind-styled-components';
+import React, { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { drivers } from "../../../../data/drivers";
+import { Driver } from "../../../../types";
+import tw from "tailwind-styled-components";
 
 const SelectBus = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const route = searchParams.get('route');
-  const pickup = searchParams.get('pickup');
-  const dropoff = searchParams.get('dropoff');
-  const pickupLat = searchParams.get('pickupLat');
-  const pickupLng = searchParams.get('pickupLng');
-  const dropoffLat = searchParams.get('dropoffLat');
-  const dropoffLng = searchParams.get('dropoffLng');
+  const route = searchParams.get("route");
+  const pickup = searchParams.get("pickup");
+  const dropoff = searchParams.get("dropoff");
+  const pickupLat = searchParams.get("pickupLat");
+  const pickupLng = searchParams.get("pickupLng");
+  const dropoffLat = searchParams.get("dropoffLat");
+  const dropoffLng = searchParams.get("dropoffLng");
 
-  const filteredBuses = busList.filter(bus => bus.route === route);
-  const [selectedBuses, setSelectedBuses] = useState<string[]>([]);
+  const filteredDrivers: Driver[] = drivers.filter(
+    (driver) => driver.route === route
+  );
+  const [selectedDrivers, setSelectedDrivers] = useState<string[]>([]);
 
-  const handleSelectBus = (busNumber: string) => {
-    setSelectedBuses(prevState =>
-      prevState.includes(busNumber)
-        ? prevState.filter(id => id !== busNumber)
-        : [...prevState, busNumber]
+  const handleSelectDriver = (driver_id: string) => {
+    setSelectedDrivers((prev) =>
+      prev.includes(driver_id)
+        ? prev.filter((id) => id !== driver_id)
+        : [...prev, driver_id]
     );
   };
 
+  useEffect(() => {
+    console.log("Selected drivers are", selectedDrivers);
+  }, [selectedDrivers]);
+
   const handleSubmit = () => {
-    router.push(`/pages/tracking?busIds=${selectedBuses.join(',')}&pickup=${pickup}&dropoff=${dropoff}&pickupLat=${pickupLat}&pickupLng=${pickupLng}&dropoffLat=${dropoffLat}&dropoffLng=${dropoffLng}`);
+    const selectedDriversString = selectedDrivers.join(",");
+    router.push(
+      `/pages/tracking?driverIds=${selectedDriversString}&pickup=${pickup}&dropoff=${dropoff}&pickupLat=${pickupLat}&pickupLng=${pickupLng}&dropoffLat=${dropoffLat}&dropoffLng=${dropoffLng}`
+    );
   };
 
   return (
@@ -36,15 +46,18 @@ const SelectBus = () => {
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
         <h1 className="text-2xl font-bold mb-4">Select Bus for Route: {route}</h1>
         <ul className="list-none p-0">
-          {filteredBuses.map((bus, index) => (
-            <BusItem 
+          {filteredDrivers.map((driver, index) => (
+            <BusItem
               key={index}
-              onClick={() => handleSelectBus(bus.number)}
-              className={selectedBuses.includes(bus.number) ? 'bg-gray-200' : ''}
+              onClick={() => handleSelectDriver(driver.id)}
+              className={
+                selectedDrivers.includes(driver.id) ? "bg-gray-200" : ""
+              }
             >
               <div>
-                <p className="font-bold">{bus.driver}</p>
-                <p>Bus Number: {bus.number}</p>
+                <p className="font-bold">{driver.name}</p>
+                <p>Bus Number: {driver.id}</p>
+                <p>Bus Number: {driver.shuttle_number}</p>
               </div>
             </BusItem>
           ))}

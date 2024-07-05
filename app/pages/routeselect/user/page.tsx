@@ -56,7 +56,7 @@ const SelectPickupDropoff = () => {
               {pickup &&
                 locations
                   .find((location) => location.name === pickup)
-                  ?.allowedDropoffs.map((dropoffLocation, index) => (
+                  ?.allowed_drop_offs.map((dropoffLocation, index) => (
                     <option key={index} value={dropoffLocation}>
                       {dropoffLocation}
                     </option>
