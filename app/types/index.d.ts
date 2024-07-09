@@ -4,11 +4,7 @@ export interface Shuttle {
 	shuttle_number: string;
 	shuttle_type: string;
 	shuttle_image_url: string;
-}
-
-export interface Coordinates {
-	lat: number;
-	lng: number;
+	shuttle_icon: string;
 }
 
 export interface Driver {
@@ -20,6 +16,11 @@ export interface Driver {
 	shift_end: string;
 	location: Coordinates;
 }
+export interface Coordinates {
+	lat: number;
+	lng: number;
+}
+
 
 export interface User {
 	id: string;

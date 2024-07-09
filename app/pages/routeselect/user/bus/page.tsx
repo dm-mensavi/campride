@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Image from 'next/image';
 import { drivers } from "../../../../data/drivers";
-import { Driver } from "../../../../types";
+import { shuttles } from "@/app/data/buses";
+import { Driver, Shuttle } from "../../../../types";
 import tw from "tailwind-styled-components";
 
 const SelectBus = () => {
@@ -29,6 +31,12 @@ const SelectBus = () => {
         : [...prev, driver_id]
     );
   };
+  const getShuttleImage = (shuttle_number: string) => {
+    console.log("Shuttle number to find:", shuttle_number); // Debugging: log shuttle_number
+    const shuttle = shuttles.find((shuttle) => shuttle.shuttle_number === shuttle_number);
+    console.log("Found shuttle:", shuttle); // Debugging: log found shuttle
+    return shuttle ? shuttle.shuttle_image_url : '/Rides/shuttle-green.png';
+  }
 
   useEffect(() => {
     console.log("Selected drivers are", selectedDrivers);
@@ -54,10 +62,17 @@ const SelectBus = () => {
                 selectedDrivers.includes(driver.id) ? "bg-gray-200" : ""
               }
             >
+              <Image
+                src={getShuttleImage(driver.shuttle_number)}
+                alt={`Shuttle ${driver.shuttle_number}`}
+                width={100}
+                height={100}
+                className="mr-4"
+              />
               <div>
                 <p className="font-bold">{driver.name}</p>
                 <p>Bus Number: {driver.id}</p>
-                <p>Bus Number: {driver.shuttle_number}</p>
+                <p>Shuttle Number: {driver.shuttle_number}</p>
               </div>
             </BusItem>
           ))}
