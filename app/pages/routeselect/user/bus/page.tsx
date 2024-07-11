@@ -32,14 +32,12 @@ const SelectBus = () => {
     );
   };
   const getShuttleImage = (shuttle_number: string) => {
-    console.log("Shuttle number to find:", shuttle_number); // Debugging: log shuttle_number
     const shuttle = shuttles.find((shuttle) => shuttle.shuttle_number === shuttle_number);
-    console.log("Found shuttle:", shuttle); // Debugging: log found shuttle
     return shuttle ? shuttle.shuttle_image_url : '/Rides/shuttle-green.png';
   }
 
   useEffect(() => {
-    console.log("Selected drivers are", selectedDrivers);
+    // console.log("Selected drivers are", selectedDrivers);
   }, [selectedDrivers]);
 
   const handleSubmit = () => {
@@ -72,7 +70,7 @@ const SelectBus = () => {
               <div>
                 <p className="font-bold">{driver.name}</p>
                 <p>Bus Number: {driver.id}</p>
-                <p>Shuttle Number: {driver.shuttle_number}</p>
+                <p>Shuttle Number: {driver.shuttle_number}</p>32
               </div>
             </BusItem>
           ))}

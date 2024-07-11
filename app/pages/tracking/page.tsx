@@ -15,13 +15,13 @@ const Tracking = () => {
   const dropoffLat = parseFloat(searchParams.get('dropoffLat') || '0');
   const dropoffLng = parseFloat(searchParams.get('dropoffLng') || '0');
 
-  console.log('Selected drivers IDs from Tracking', selectedDriverIds);
+  // console.log('Selected drivers IDs from Tracking', selectedDriverIds);
   
   const trackedDrivers: Driver[] = drivers.filter(driver => 
     selectedDriverIds.includes(driver.id)
   );
 
-  console.log('Tracked drivers', trackedDrivers);
+  // console.log('Tracked drivers', trackedDrivers);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-100">
