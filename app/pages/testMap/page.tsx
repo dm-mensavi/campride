@@ -1,73 +1,33 @@
-"use client";
-import {
-	APIProvider,
-	Map,
-	AdvancedMarker,
-	useMap,
-	useMapsLibrary,
-	MapCameraProps,
-	MapCameraChangedEvent,
-} from "@vis.gl/react-google-maps";
-import { useMemo, useState } from "react";
-import Image from "next/image";
-import { drivers } from "@/app/data/drivers";
-import { shuttles } from "@/app/data/buses";
-import { Driver, Coordinates } from "@/app/types";
-import { get } from "http";
+import tw from 'tailwind-styled-components';
 
-interface GoogleMapComponentProps {
-	drivers: Driver[];
-	pickup: Coordinates;
-	dropoff: Coordinates;
+const Container = tw.div`
+  @apply flex items-center justify-center min-h-screen bg-gray-100;
+`;
+
+const Form = tw.form`
+  @apply bg-white p-6 rounded shadow-md w-42 max-w-sm;
+`;
+
+const Input = tw.input`
+  @apply w-full p-2 border border-gray-300 rounded mt-10 mt-4;
+`;
+
+const Button = tw.button`
+  @apply w-full p-2 bg-blue-500 text-white rounded mt-10;
+`;
+
+export default function Login() {
+  return (
+    <Container>
+      <Form>
+        <h2 className="text-center text-2xl mb-6">Shuttle driver login</h2>
+        <Input type="email" placeholder="Email" />
+        <Input type="password" placeholder="Password" />
+        <Button type="submit">Log in</Button>
+        <div className="text-center mt-4">
+          <a href="#" className="text-blue-500">Register</a>
+        </div>
+      </Form>
+    </Container>
+  );
 }
-
-const GoogleMapComponent = () => {
-	const INITIAL_CAMERA = useMemo(
-		() => ({
-			center: { lat: 6.68275, lng: -1.57699 },
-			zoom: 14,
-		}),
-		[]
-	);
-
-	const [cameraProp, setCameraProp] = useState<MapCameraProps>(INITIAL_CAMERA);
-	const handleCameraChange = (camera: MapCameraChangedEvent) => {
-		// console.log("Camera changed", camera.detail)
-		return setCameraProp(camera.detail);
-	};
-
-	return (
-		<div style={{ display: "flex", height: "100dvh", width: "100%" }}>
-			<APIProvider
-				apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string}>
-				<Map
-					{...cameraProp}
-					onCameraChanged={handleCameraChange}
-					mapId="33570c96c3587029">
-					{/* <Markers/> */}
-					{drivers.map((driver, index) => {
-						// console.log("Driver location", driver.location);
-						return (
-							<AdvancedMarker key={index} position={driver.location}>
-								<Image
-									src={
-										shuttles.at(index).shuttle_image_url
-											? shuttles.at(index).shuttle_image_url
-											: "../../../public/Rides/campride-green.png"
-									}
-									alt="shuttle"
-									width={50}
-									height={50}
-								/>
-							</AdvancedMarker>
-						);
-					})}
-				</Map>
-			</APIProvider>
-		</div>
-	);
-};
-
-// const shuttle = shuttles.filter((shuttle) => shuttle.shuttle_number === shuttle.shuttle_number);
-
-export default GoogleMapComponent;

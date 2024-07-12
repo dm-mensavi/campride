@@ -1,9 +1,12 @@
+// StudentSignUpForm.js
 "use client";
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../../lib/firebaseConfig';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import tw from 'tailwind-styled-components';
 
 const StudentSignUpForm = () => {
@@ -11,7 +14,6 @@ const StudentSignUpForm = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const router = useRouter();
 
   const handleSignUp = async () => {
@@ -22,7 +24,7 @@ const StudentSignUpForm = () => {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      setSuccess('Account created successfully!✅ Redirecting ...');
+      toast.success('Account created successfully! Redirecting to login...');
       setTimeout(() => {
         router.push('/pages/auth/userLogin'); // Redirect to sign-in page
       }, 2000);
@@ -33,6 +35,7 @@ const StudentSignUpForm = () => {
 
   return (
     <Wrapper>
+      <ToastContainer />
       <FormContainer>
         <Title>Student Sign Up</Title>
         <Input
@@ -55,7 +58,6 @@ const StudentSignUpForm = () => {
         />
         <Button onClick={handleSignUp}>Sign Up</Button>
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        {success && <SuccessMessage>{success}</SuccessMessage>}
       </FormContainer>
     </Wrapper>
   );
@@ -85,8 +87,4 @@ const Button = tw.button`
 
 const ErrorMessage = tw.p`
   text-red-500 text-center mt-4
-`;
-
-const SuccessMessage = tw.p`
-  text-green-500 text-center mt-4
 `;

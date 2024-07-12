@@ -1,12 +1,52 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Image from 'next/image';
+import Image from "next/image";
 import { drivers } from "../../../../data/drivers";
 import { shuttles } from "@/app/data/buses";
-import { Driver, Shuttle } from "../../../../types";
+import { Driver } from "../../../../types";
 import tw from "tailwind-styled-components";
+
+const Container = tw.div`
+  min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-blue-200 to-green-300
+`;
+
+const Card = tw.div`
+  w-full max-w-md bg-white px-4 py-10 rounded-lg shadow-md
+`;
+
+const Title = tw.h1`
+  text-xl text-center lg:text-2xl font-bold mb-4 text-gray-800
+`;
+
+const BusList = tw.ul`
+  list-none p-0
+`;
+
+const BusItem = tw.li`
+  flex items-center p-4 border-b border-gray-200 last:border-none cursor-pointer transition duration-300 ease-in-out transform hover:bg-blue-200
+`;
+
+const BusInfo = tw.div`
+  flex flex-col
+`;
+
+const DriverName = tw.p`
+  font-bold text-lg lg:text-xl text-gray-900 mb-1
+`;
+
+const BusNumber = tw.p`
+  text-gray-700 text-base lg:text-lg
+`;
+
+const ShuttleNumber = tw.p`
+  text-gray-700 text-base lg:text-lg
+`;
+
+const SubmitButton = tw.button`
+  w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-300 mt-4
+`;
 
 const SelectBus = () => {
   const router = useRouter();
@@ -31,14 +71,13 @@ const SelectBus = () => {
         : [...prev, driver_id]
     );
   };
-  const getShuttleImage = (shuttle_number: string) => {
-    const shuttle = shuttles.find((shuttle) => shuttle.shuttle_number === shuttle_number);
-    return shuttle ? shuttle.shuttle_image_url : '/Rides/shuttle-green.png';
-  }
 
-  useEffect(() => {
-    // console.log("Selected drivers are", selectedDrivers);
-  }, [selectedDrivers]);
+  const getShuttleImage = (shuttle_number: string) => {
+    const shuttle = shuttles.find(
+      (shuttle) => shuttle.shuttle_number === shuttle_number
+    );
+    return shuttle ? shuttle.shuttle_image_url : "/Rides/shuttle-green.png";
+  };
 
   const handleSubmit = () => {
     const selectedDriversString = selectedDrivers.join(",");
@@ -48,16 +87,16 @@ const SelectBus = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-100">
-      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-4">Select Bus for Route: {route}</h1>
-        <ul className="list-none p-0">
+    <Container>
+      <Card>
+        <Title>Select Bus for Route: {route}</Title>
+        <BusList>
           {filteredDrivers.map((driver, index) => (
             <BusItem
               key={index}
               onClick={() => handleSelectDriver(driver.id)}
               className={
-                selectedDrivers.includes(driver.id) ? "bg-gray-200" : ""
+                selectedDrivers.includes(driver.id) ? "bg-blue-100" : ""
               }
             >
               <Image
@@ -65,29 +104,20 @@ const SelectBus = () => {
                 alt={`Shuttle ${driver.shuttle_number}`}
                 width={100}
                 height={100}
-                className="mr-4"
+                className="mr-4 rounded-lg"
               />
-              <div>
-                <p className="font-bold">{driver.name}</p>
-                <p>Bus Number: {driver.id}</p>
-                <p>Shuttle Number: {driver.shuttle_number}</p>32
-              </div>
+              <BusInfo>
+                <DriverName>{driver.name}</DriverName>
+                <BusNumber>Bus Number: {driver.id}</BusNumber>
+                <ShuttleNumber>Shuttle Number: {driver.shuttle_number}</ShuttleNumber>
+              </BusInfo>
             </BusItem>
           ))}
-        </ul>
-        <button
-          onClick={handleSubmit}
-          className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition-colors duration-300 mt-4"
-        >
-          Track Selected Buses
-        </button>
-      </div>
-    </div>
+        </BusList>
+        <SubmitButton onClick={handleSubmit}>Track Selected Buses</SubmitButton>
+      </Card>
+    </Container>
   );
 };
 
 export default SelectBus;
-
-const BusItem = tw.li`
-  flex items-center p-4 border-b border-gray-200 last:border-none cursor-pointer
-`;
