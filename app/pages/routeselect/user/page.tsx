@@ -75,12 +75,13 @@ const SelectPickupDropoff = () => {
 };
 
 export default SelectPickupDropoff;
+
 const Wrapper = tw.div`
-  min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 to-blue-500 p-4
+  min-h-screen -mt-16 sm:mt-0 flex items-center justify-center sm:bg-gradient-to-r sm:from-green-400 sm:to-blue-500 p-4
 `;
 
 const FormContainer = tw.div`
-  w-full max-w-lg bg-white p-8 rounded-xl shadow-xl
+  w-full sm:max-w-lg bg-white sm:p-8 sm:rounded-xl sm:shadow-xl
 `;
 
 const Title = tw.h1`

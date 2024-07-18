@@ -9,11 +9,11 @@ import { Driver } from "../../../../types";
 import tw from "tailwind-styled-components";
 
 const Container = tw.div`
-  min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-blue-200 to-green-300
+  min-h-screen flex flex-col items-center justify-center p-4 sm:bg-gradient-to-br sm:from-blue-200 sm:to-green-300
 `;
 
 const Card = tw.div`
-  w-full max-w-md bg-white px-4 py-10 rounded-lg shadow-md
+  sm:w-full -mt-16 sm:mt-0 sm:max-w-md sm:bg-white sm:px-4 sm:py-10 sm:rounded-lg sm:shadow-md
 `;
 
 const Title = tw.h1`
@@ -25,11 +25,11 @@ const BusList = tw.ul`
 `;
 
 const BusItem = tw.li`
-  flex items-center p-4 border-b border-gray-200 last:border-none cursor-pointer transition duration-300 ease-in-out transform hover:bg-blue-200
+  flex items-center p-6 border-b border-gray-200 last:border-none cursor-pointer transition duration-300 ease-in-out transform hover:bg-blue-200
 `;
 
 const BusInfo = tw.div`
-  flex flex-col
+  flex flex-col ml-5
 `;
 
 const DriverName = tw.p`
@@ -45,7 +45,7 @@ const ShuttleNumber = tw.p`
 `;
 
 const SubmitButton = tw.button`
-  w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-300 mt-4
+  w-full mt-4 bg-gradient-to-r from-green-500 to-blue-600 text-white py-3 rounded-lg hover:from-green-600 hover:to-blue-700 transition-colors duration-300 ease-in-out font-semibold text-xl shadow-md
 `;
 
 const SelectBus = () => {
