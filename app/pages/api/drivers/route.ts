@@ -2,23 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { initMongoose } from '@/app/lib/mongodb';
 import DriverModel from "@/app/models/drivers";
 import { Driver as DriverType } from '@/app/types';
-import { drivers } from '@/app/data/drivers';
 import mongoose from 'mongoose';
-
-async function populateDrivers() {
-  try {
-    await initMongoose();
-    const driverPromises = drivers.map(driver => new DriverModel(driver).save());
-    await Promise.all(driverPromises);
-    console.log('Database populated with drivers data.');
-  } catch (error) {
-    console.error('Error populating the database:', error);
-  } finally {
-    await mongoose.connection.close();
-  }
-}
-
-// populateDrivers();
 
 export async function POST(req: NextRequest) {
   try {
@@ -50,8 +34,6 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
     const route = searchParams.get('route');
-
-    populateDrivers();
     
     if (id) {
       if (!mongoose.Types.ObjectId.isValid(id)) {

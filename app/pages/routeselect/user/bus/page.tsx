@@ -3,10 +3,11 @@
 import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { drivers } from "../../../../data/drivers";
-import { shuttles } from "@/app/data/buses";
-import { Driver } from "../../../../types";
+// import { drivers } from "../../../../data/drivers";
+// import { shuttles } from "@/app/data/buses";
+// import { Driver } from "../../../../types";
 import tw from "tailwind-styled-components";
+import useSWR from 'swr';
 
 const Container = tw.div`
   min-h-screen flex flex-col items-center justify-center p-4 sm:bg-gradient-to-br sm:from-blue-200 sm:to-green-300
@@ -47,6 +48,7 @@ const ShuttleNumber = tw.p`
 const SubmitButton = tw.button`
   w-full mt-4 bg-gradient-to-r from-green-500 to-blue-600 text-white py-3 rounded-lg hover:from-green-600 hover:to-blue-700 transition-colors duration-300 ease-in-out font-semibold text-xl shadow-md
 `;
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 const SelectBus = () => {
   const router = useRouter();
@@ -59,9 +61,9 @@ const SelectBus = () => {
   const dropoffLat = searchParams.get("dropoffLat");
   const dropoffLng = searchParams.get("dropoffLng");
 
-  const filteredDrivers: Driver[] = drivers.filter(
-    (driver) => driver.route === route
-  );
+  const { data: drivers, error: driversError } = useSWR(`http://localhost:3000/pages/api/drivers?route=${route}`, fetcher);
+  const { data: shuttles, error: shuttlesError } = useSWR('http://localhost:3000/pages/api/shuttles', fetcher);
+
   const [selectedDrivers, setSelectedDrivers] = useState<string[]>([]);
 
   const handleSelectDriver = (driver_id: string) => {
@@ -73,8 +75,8 @@ const SelectBus = () => {
   };
 
   const getShuttleImage = (shuttle_number: string) => {
-    const shuttle = shuttles.find(
-      (shuttle) => shuttle.shuttle_number === shuttle_number
+    const shuttle = shuttles?.find(
+      (shuttle: any) => shuttle.shuttle_number === shuttle_number
     );
     return shuttle ? shuttle.shuttle_image_url : "/Rides/shuttle-green.png";
   };
@@ -86,17 +88,20 @@ const SelectBus = () => {
     );
   };
 
+  if (driversError || shuttlesError) return <div>Error loading data</div>;
+  if (!drivers || !shuttles) return <div>Loading...</div>;
+
   return (
     <Container>
       <Card>
         <Title>Select Bus for Route: {route}</Title>
         <BusList>
-          {filteredDrivers.map((driver, index) => (
+          {drivers.map((driver: any, index: number) => (
             <BusItem
               key={index}
-              onClick={() => handleSelectDriver(driver.id)}
+              onClick={() => handleSelectDriver(driver._id)}
               className={
-                selectedDrivers.includes(driver.id) ? "bg-blue-100" : ""
+                selectedDrivers.includes(driver._id) ? "bg-blue-100" : ""
               }
             >
               <Image
@@ -108,7 +113,7 @@ const SelectBus = () => {
               />
               <BusInfo>
                 <DriverName>{driver.name}</DriverName>
-                <BusNumber>Bus Number: {driver.id}</BusNumber>
+                {/* <BusNumber>Bus Number: {driver._id}</BusNumber> */}
                 <ShuttleNumber>Shuttle Number: {driver.shuttle_number}</ShuttleNumber>
               </BusInfo>
             </BusItem>

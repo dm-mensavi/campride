@@ -2,7 +2,37 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import tw from 'tailwind-styled-components';
 import SignOutButton from '@/app/components/Auth/SignOutButton';
+
+
+const Wrapper = tw.div`
+  min-h-screen -mt-1 sm:mt-0 flex items-center justify-center sm:bg-gradient-to-r sm:from-green-400 sm:to-blue-500 p-4
+`;
+
+const FormContainer = tw.div`
+  w-full sm:max-w-lg bg-white sm:p-8 sm:rounded-xl
+`;
+
+const Title = tw.h1`
+  text-2xl md:text-3xl font-extrabold mb-8 text-center text-gray-900
+`;
+
+const Button = tw.button`
+  mt-8 w-full bg-gradient-to-r from-green-500 to-blue-600 text-white py-3 rounded-lg hover:from-green-600 hover:to-blue-700 transition-colors duration-300 ease-in-out font-semibold text-xl shadow-md
+`;
+
+const Card = tw.div`
+  w-full max-w-md bg-white p-6 rounded-lg 
+`;
+
+const ListItem = tw.li`
+  @apply list-none list-style-none;
+`;
+
+const SignOutWrapper = tw.div`
+  @apply mt-4 flex justify-center;
+`;
 
 const RouteSelect = () => {
   const routes = [
@@ -20,24 +50,23 @@ const RouteSelect = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-100">
-      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-4">Select Driver Route</h1>
-        <ul className="list-disc ml-6 mb-4">
+    <Wrapper>
+      <Card>
+        <Title>Select Route</Title>
+        <FormContainer>
           {routes.map((route, index) => (
-            <li key={index} className="mb-2 list-none">
-              <button
-                onClick={() => handleRouteSelect(route)}
-                className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors duration-300"
-              >
+            <ListItem key={index}>
+              <Button onClick={() => handleRouteSelect(route)}>
                 {route}
-              </button>
-            </li>
+              </Button>
+            </ListItem>
           ))}
-        </ul>
-        <SignOutButton />
-      </div>
-    </div>
+        </FormContainer>
+        <SignOutWrapper>
+          <SignOutButton />
+        </SignOutWrapper>
+      </Card>
+    </Wrapper>
   );
 };
 
