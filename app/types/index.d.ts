@@ -8,13 +8,13 @@ export interface Shuttle {
 }
 
 export interface Driver {
-	id: string;
 	name: string;
 	route: string;
 	shuttle_number: Shuttle.shuttle_number;
-	shift_start: string;
-	shift_end: string;
-	location: Coordinates;
+	shift_start?: string;
+	shift_end?: string;
+	location?: Coordinates;
+	on_duty?: boolean;
 }
 export interface Coordinates {
 	lat: number;
@@ -23,7 +23,7 @@ export interface Coordinates {
 
 
 export interface User {
-	id: string;
+	// id: string;
 	name: string;
 	fav_route: string;
 	pickup_location: string;

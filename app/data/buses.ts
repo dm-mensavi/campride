@@ -10,7 +10,7 @@ export const shuttles: Shuttle[] = [
   {
     shuttle_number: '1002',
     shuttle_type: 'Green Van',
-    shuttle_image_url: '/Rides/campride-green.png',
+    shuttle_image_url: '/Rides/shuttle-green.png',
     shuttle_icon: '/icons/van.png'
   },
   {
@@ -28,7 +28,7 @@ export const shuttles: Shuttle[] = [
   {
     shuttle_number: '1005',
     shuttle_type: 'Green Van',
-    shuttle_image_url: '/Rides/campride-green.png',
+    shuttle_image_url: '/Rides/shuttle-white.png',
     shuttle_icon: '/icons/van.png'
   },
   {

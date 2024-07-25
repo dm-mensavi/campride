@@ -34,52 +34,6 @@ const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
 }) => {
 	// const [origin, setOrigin] = 
 	const [userLocation, setUserLocation] = useState<{lat: number, lng: number}>({lat: 6.68275, lng: -1.57699});
-	// const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
-	// const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer | null>(null);
-	// const [directionService, setDirectionService] = useState<google.maps.DirectionsService | null>(null);
-	
-	
-	// const map = useMap();
-	// const routeLibrary = useMapsLibrary('routes');
-	// console.log("Map from useMap:0 ", map);
-	// console.log("routeLibrary from useMapsLibrary:0 ", routeLibrary);
-	// //use effect for directions
-	// useEffect(() => {
-	// 	if (!map || !routeLibrary) return;
-	// 	console.log("Map from useMap:1 ", map);
-	// 	console.log("routeLibrary from useMapsLibrary:1 ", routeLibrary);
-	// 	setDirectionService(new routeLibrary.DirectionsService());
-	// 	setDirectionsRenderer(new routeLibrary.DirectionsRenderer({map}));
-	// }, [map, routeLibrary])
-
-	// useEffect(() => {
-	// 	if(!directionService || !directionsRenderer) return;
-	// 	console.log("Map from useMap: 2", map);
-	// 	console.log("routeLibrary from useMapsLibrary:2 ", routeLibrary);
-	// 	directionService.route({
-	// 		origin: userLocation,
-	// 		destination: pickup,
-	// 		travelMode: google.maps.TravelMode.WALKING,
-	// 	})
-	// 		.then((result) => {
-	// 			console.log("Directions from user to pickup: ", result);
-	// 			directionsRenderer.setDirections(result);
-	// 			const route = result.routes.map(({legs, summary}) => ({
-	// 				legs: legs.map(({distance, duration, end_address, start_address}) => ({
-	// 					distance: distance.text,
-	// 					duration: duration.text,
-	// 					end_address,
-	// 					start_address,
-	// 				})),
-	// 				summary,
-	// 			}))[0];
-	// 			console.log("routes from directions: ",route);
-	// 			}).catch((er)=> {
-	// 				console.log("Error from Directions: ", er)
-	// 				console.error(er)
-	// 			});
-	// 		}, [directionService, directionsRenderer, pickup, userLocation]);		
-	// 	;
 
 	const getShuttleImage = (shuttle_number: string) => {
 		const shuttle = shuttles.find(
@@ -88,40 +42,9 @@ const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
 		return shuttle ? shuttle.shuttle_image_url : '/Rides/shuttle-green.png';
 	};
 
-	// const getUserLocation = () => {
-	// 	if (navigator.geolocation) {
-	// 		const watchId = navigator.geolocation.watchPosition(
-	// 			(position) => {
-	// 				const userLoc = {
-	// 					lat: position.coords.latitude,
-	// 					lng: position.coords.longitude,
-	// 				};
-	// 				setUserLocation(userLoc);
-	// 			},
-	// 			(error) => {
-	// 				console.error("Error getting the user location:", error);
-	// 				// Fallback location
-	// 				setUserLocation({ lat: 6.68275, lng: -1.57699 });
-	// 			},
-	// 			{ enableHighAccuracy: true, maximumAge: 0, timeout: 30000 }
-	// 		);
-
-	// 		return () => navigator.geolocation.clearWatch(watchId);
-	// 	} else {
-	// 		console.error("Geolocation is not supported by this browser.");
-	// 		// Fallback location
-	// 		setUserLocation({ lat: 6.67456, lng: -1.56756 });
-	// 	}
-	// };
-
-// 
-	// useEffect(() => {
-	// 	getUserLocation();
-	// }, [pickup]);
-
 	const INITIAL_CAMERA = useMemo(
 		() => ({
-			center: { lat: 6.68275, lng: -1.57699 },
+			center: { lat: 6.67342, lng: -1.567498 },
 			zoom: 15,
 		}),
 		[]
