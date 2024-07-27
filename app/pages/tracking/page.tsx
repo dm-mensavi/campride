@@ -29,7 +29,7 @@ const Tracking = () => {
   }, []);
 
   const trackedDrivers: Driver[] = drivers.filter(driver => 
-    selectedDriverIds.includes(driver.id)
+    selectedDriverIds.includes(driver._id)
   );
 
   return (
