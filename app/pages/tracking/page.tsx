@@ -28,10 +28,13 @@ const Tracking = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const trackedDrivers: Driver[] = drivers.filter(driver => 
-    selectedDriverIds.includes(driver._id)
-  );
+  interface DriverWithId extends Driver {
+    _id: string;
+  }
 
+  const trackedDrivers: DriverWithId[] = (drivers as DriverWithId[]).filter((driver: DriverWithId) => 
+  selectedDriverIds.includes(driver._id)
+);
   return (
     <Container>
       {isLoading ? (

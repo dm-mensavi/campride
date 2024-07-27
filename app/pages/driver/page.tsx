@@ -1,4 +1,5 @@
 "use client";
+import GoogleMapComponent from '@/app/components/Common/GoogleMapComponent';
 import withAuth from '../../hoc/withAuth';
 
 const DriverDashboard = () => {
@@ -6,6 +7,7 @@ const DriverDashboard = () => {
     <div>
       <h1>Driver Dashboard</h1>
       {/* Driver dashboard content */}
+      {/* <GoogleMapComponent /> */}
     </div>
   );
 };
