@@ -13,17 +13,17 @@ const Tracking = () => {
   const pickupLat = parseFloat(searchParams.get('pickupLat') || '0');
   const pickupLng = parseFloat(searchParams.get('pickupLng') || '0');
   const dropoffLat = parseFloat(searchParams.get('dropoffLat') || '0');
-  const dropoffLng = parseFloat(searchParams.get('dropoffLng') || '0');
+  const dropoffLng = parseFloat(searchParams.get('dropoffLat') || '0');
 
   const [isLoading, setIsLoading] = useState(true);
-  const [minutesLeft, setMinutesLeft] = useState(10); // initial countdown time in minutes
+  const [secondsLeft, setSecondsLeft] = useState(600); // initial countdown time in seconds (10 minutes)
 
   useEffect(() => {
     setTimeout(() => setIsLoading(false), 3000); // Simulating loading time
 
     const interval = setInterval(() => {
-      setMinutesLeft(prevMinutes => (prevMinutes > 0 ? prevMinutes - 1 : 0));
-    }, 60000); // Decrement every minute (60000 ms)
+      setSecondsLeft(prevSeconds => (prevSeconds > 0 ? prevSeconds - 1 : 0));
+    }, 1000); // Decrement every second
 
     return () => clearInterval(interval);
   }, []);
@@ -33,8 +33,15 @@ const Tracking = () => {
   }
 
   const trackedDrivers: DriverWithId[] = (drivers as DriverWithId[]).filter((driver: DriverWithId) => 
-  selectedDriverIds.includes(driver._id)
-);
+    selectedDriverIds.includes(driver._id)
+  );
+
+  const formatTime = (totalSeconds: number) => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
+
   return (
     <Container>
       {isLoading ? (
@@ -56,9 +63,9 @@ const Tracking = () => {
               {trackedDrivers.map((driver: Driver, index) => (
                 <BusItem key={index}>
                   <p className="font-bold">Bus Number: {driver.shuttle_number}</p>
-                  <p>Arriving in {minutesLeft} minutes</p>
+                  <p>Arriving in {formatTime(secondsLeft)}</p>
                   <ProgressBar>
-                    <Progress progress={(10 - minutesLeft) * 10} />
+                    <Progress progress={((600 - secondsLeft) / 600) * 100} />
                   </ProgressBar>
                 </BusItem>
               ))}
